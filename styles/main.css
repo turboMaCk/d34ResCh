@@ -1,0 +1,39 @@
+/* line 3, ../sass/main.sass */
+body {
+  font: 12px Arial;
+  background: #f2f2f2;
+}
+
+/* line 7, ../sass/main.sass */
+path {
+  stroke: #22c682;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* line 12, ../sass/main.sass */
+.area {
+  fill: #22c682;
+  opacity: 0.5;
+  stroke-width: 0;
+}
+
+/* line 19, ../sass/main.sass */
+.axis text {
+  fill: #7f7f7f;
+}
+
+/* line 25, ../sass/main.sass */
+.grid path {
+  stroke-width: 0 !important;
+}
+
+/* line 29, ../sass/main.sass */
+.axis line, .grid line,
+.axis path,
+.grid path {
+  fill: none;
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+  stroke: #a7a7a7;
+}

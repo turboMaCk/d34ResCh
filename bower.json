@@ -1,0 +1,20 @@
+{
+  "name": "d3js-text",
+  "version": "0.0.0",
+  "authors": [
+    "Marek Fajkus <marek.faj@gmail.com>"
+  ],
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.4.8"
+  }
+}
