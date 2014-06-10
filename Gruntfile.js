@@ -25,7 +25,7 @@ module.exports = function(grunt) {
         files: 'Gruntfile.js',
       },
       src: {
-        files: ['index.html', 'scripts/**/*.js', 'styles/**/*.css', 'data/**/*.{.json,.tsv,.csv,.xml}'],
+        files: ['index.html', 'scripts/**/*.js', 'styles/**/*.css', 'data/**/*.{json,tsv,csv,xml}'],
         tasks: ['jshint']
       },
       compass: {

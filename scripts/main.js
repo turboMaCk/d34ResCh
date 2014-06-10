@@ -1,6 +1,53 @@
 (function() {
 
   /**
+   * Load other data
+   */
+
+  var updateBtn = document.getElementById('updateBtn');
+
+  updateBtn.onclick = updateData;
+
+  function updateData() {
+    d3.json('../data/fixtures-alt.json', function(error, data) {
+
+      console.log(data);
+
+      // parse data
+      data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.close = +d.value
+      });
+
+      // Scale range od data
+      x.domain(d3.extent(data, function(d) {
+        return d.date;
+      }));
+
+      y.domain([0, d3.max(data, function(d) {
+        return d.value;
+      })]);
+
+
+      // aply changes
+      var svg = d3.select('body').transition();
+
+      // make changes
+      svg.select('.line')
+        .duration(750)
+        .attr('d', valueline(data));
+
+      //svg.select('.x.axis')
+        //.duration(750)
+        //.call(xAxis);
+
+      //svg.select('.y.axis')
+        //.duration(750)
+        //.call(yAxis);
+    });
+  }
+
+  /**
    * BASIC CONFIG
    */
 
@@ -19,7 +66,7 @@
   // others
   var numberOfTicks = {
     x: 7,
-    y: 5
+    y: 4
   };
 
   var width = outerWidth - margin.left - margin.right;
@@ -98,6 +145,17 @@
       return d.value;
     })]);
 
+    // draw value line
+    svg.append('path')
+      .attr('class', 'line')
+      .attr('d', valueline(data));
+
+    // draw area
+    //svg.append('path')
+      //.datum(data)
+      //.attr('class', 'area')
+      //.attr('d', area);
+
     // Draw grid
     svg.append('g')
       .attr('class', 'grid')
@@ -105,17 +163,6 @@
         .tickSize(-width, 0, 0)
         .tickFormat('')
       );
-
-
-    // draw value line
-    svg.append('path')
-      .attr('d', valueline(data));
-
-    // draw area
-    svg.append('path')
-      .datum(data)
-      .attr('class', 'area')
-      .attr('d', area);
 
     // drav points
     //svg.selectAll('circle')
