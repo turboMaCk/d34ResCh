@@ -16,7 +16,7 @@
       // parse data
       data.forEach(function(d) {
         d.date = parseDate(d.date);
-        d.close = +d.value
+        d.close = +d.value;
       });
 
       // Scale range od data
@@ -33,17 +33,23 @@
       var svg = d3.select('body').transition();
 
       // make changes
-      svg.select('.line')
+      svg.select('.area')
         .duration(750)
-        .attr('d', valueline(data));
+        .attr('d', area(data));
 
-      //svg.select('.x.axis')
-        //.duration(750)
-        //.call(xAxis);
+      svg.select('.axis-x')
+        .duration(750)
+        .call(xAxis);
 
-      //svg.select('.y.axis')
-        //.duration(750)
-        //.call(yAxis);
+      svg.select('.axis-y')
+        .duration(750)
+        .call(yAxis);
+
+      svg.selectAll('.grid')
+        .duration(750)
+        .call(grid);
+
+      updateTicks();
     });
   }
 
@@ -90,15 +96,6 @@
                       return y(d.value);
                     });
 
-  // value line
-  var valueline = d3.svg.line()
-                        .x(function(d) {
-                          return x(d.date);
-                        })
-                        .y(function(d) {
-                          return y(d.value);
-                        });
-
   // main element
   var svg = d3.select('body')
               .append('svg')
@@ -106,6 +103,23 @@
               .attr('height', outerHeight)
               .append('g')
               .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
+  // X axis
+  var xAxis = make_x_axis()
+        .tickSize(0,0,0);
+
+  // Y axis
+  var yAxis = make_y_axis()
+         .tickSize(10,0,0);
+
+  var grid = make_y_axis()
+        .tickSize(-width, 0, 0)
+        .tickFormat('');
+
+  var updateTicks = function() {
+    d3.selectAll('.grid g.tick line, .axis path, .axis g.tick line')
+      .style("stroke-dasharray", ("2, 2"));
+  }
 
   /**
    * Functions
@@ -145,50 +159,26 @@
       return d.value;
     })]);
 
-    // draw value line
-    svg.append('path')
-      .attr('class', 'line')
-      .attr('d', valueline(data));
-
     // draw area
-    //svg.append('path')
-      //.datum(data)
-      //.attr('class', 'area')
-      //.attr('d', area);
+    svg.append('path')
+      .datum(data)
+      .attr('class', 'area')
+      .attr('d', area);
 
     // Draw grid
     svg.append('g')
       .attr('class', 'grid')
-      .call(make_y_axis()
-        .tickSize(-width, 0, 0)
-        .tickFormat('')
-      );
-
-    // drav points
-    //svg.selectAll('circle')
-      //.append('circle')
-        //.attr('class', 'point')
-        //.attr('cx', function (d) {
-          //return x(d.date);
-        //})
-        //.attr('cy', function(d) {
-          //return y(d.value);
-        //})
-        //.attr('r', 3);
+      .call(grid);
 
     // draw X axis
     svg.append('g')
       .attr('class', 'axis axis-x')
-      .call(make_x_axis()
-        .tickSize(0,0,0)
-      );
+      .call(xAxis);
 
     // draw Y axis
     svg.append('g')
       .attr('class', 'axis axis-y')
-      .call(make_y_axis()
-         .tickSize(10,0,0)
-      );
+      .call(yAxis);
 
     // Label axis
 
@@ -209,8 +199,7 @@
 
 
     // restyle grid
-    d3.selectAll('.grid g.tick line, .axis path, .axis g.tick line')
-      .style("stroke-dasharray", ("2, 2"));
+    updateTicks()
   });
 
 })();
