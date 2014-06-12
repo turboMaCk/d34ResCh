@@ -119,7 +119,7 @@
 
     y.domain([0, d3.max(data, function(d) {
       return d.value;
-    })]);
+    })*1.1]); // add extra 10% space on top
 
     // points
     var point = svg.selectAll('.point').data(data, function(d) {
