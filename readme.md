@@ -1,4 +1,4 @@
-D3 for Responsive Charts advanced demo
+D3 for Responsive Charts demo
 ==============
 This project is a prototype of *advanced in-browser responsive charts* based on *D3.js* library.
 Project demonstrate **responsive** and **OOP** solution in pure *java-script* with *D3.js*
