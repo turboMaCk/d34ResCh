@@ -1,301 +1,276 @@
+// scripts/main-chart.js
+
 (function() {
-  var container = d3.select('#main-chart');
 
-  var currentData;
+  // Plugin class namespace
+  var proto_methods = {
+    init: function(selector) {
+      var self = this;
 
-  /**
-   * BASIC CONFIG
-   */
-  // margins
-  var margin = {
-    top: 30,
-    right: 20,
-    bottom: 40,
-    left: 75
-  };
+      // margins
+      this.margin = {
+        top: 30,
+        right: 20,
+        bottom: 40,
+        left: 75
+      };
 
-  // ticks
-  var numberOfTicks = {
-    x: 7,
-    y: 4
-  };
+      // ticks
+      this.numberOfTicks = {
+        x: 7,
+        y: 4
+      };
 
-  var duration = 750;
+      // duration of animations
+      this.duration = 750;
 
-  // setup date parsing
-  var parseDate = d3.time.format("%d-%m-%Y").parse;
+      // date format parsing setup
+      this.parseDate = d3.time.format("%d-%m-%Y").parse;
 
-  // set Global vars
-  var outerWidth, outerHeight, width, height, x, y,
-    xAxis, yAxis, grid;
+      // first setup
+      this.setupDimensions();
+      this.setupChart();
 
-  /**
-   * helper functions
-   */
-  function make_x_axis() {
-    var axis = d3.svg.axis()
-              .scale(x)
-              .orient('top')
-              .ticks(numberOfTicks.x);
+      this.redrawChart(self.currentData);
 
-    return axis;
-  }
+      // return instance
+      return this;
+    },
+    /**
+     * Make X axis
+     * @return d3.svg.axis
+     */
+    make_x_axis: function() {
+      var self = this;
 
-  function make_y_axis() {
-    var axis = d3.svg.axis()
-              .scale(y)
-              .orient('left')
-              .ticks(numberOfTicks.y);
+      return d3.svg.axis()
+        .scale(self.x)
+        .orient('top')
+        .ticks(self.numberOfTicks.x);
+    },
+    /**
+     * Make Y axis
+     * @return d3.svg.axis
+     */
+    make_y_axis: function() {
+      var self = this;
 
-    return axis;
-  }
+      return d3.svg.axis()
+        .scale(self.y)
+        .orient('left')
+        .ticks(self.numberOfTicks.y);
+    },
+    /**
+     * Parse data
+     * @param data [array of objects]
+     * @return parsed data
+     */
+    parse_data: function(data) {
+      var parseDate = this.parseDate;
 
-  function update_ticks() {
-    var ticks = d3.selectAll('.grid g.tick line, .axis path, .axis g.tick line')
-      .style("stroke-dasharray", ("2, 2"));
-
-    return ticks;
-  }
-
-  function parse_data(data) {
-    var parseData = data.forEach(function(d) {
-      d.date = d.date instanceof Date ?  d.date : parseDate(d.date);
-      d.value = +d.value;
-    });
-
-    return parseData;
-  }
-
-
-  function setupDimensions() {
-    // size
-    outerWidth = parseInt(container.style('width'));
-    outerHeight = parseInt(container.style('height'));
-
-    width = outerWidth - margin.left - margin.right;
-    height = outerHeight - margin.top - margin.bottom;
-
-    // scales
-    x = d3.time.scale().range([0, width]);
-    y = d3.scale.linear().range([height, 0]);
-
-    // X axis
-    xAxis = make_x_axis()
-          .tickSize(0,0,0);
-
-    // Y axis
-    yAxis = make_y_axis()
-           .tickSize(10,0,0);
-
-    grid = make_y_axis()
-          .tickSize(-width, 0, 0)
-          .tickFormat('');
-  }
-
-  var svg, area, valueline;
-
-  function setupChart() {
-    // SVG – main element
-    svg = container
-      .append('svg')
-      .attr('width', outerWidth)
-      .attr('height', outerHeight)
-      .append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
-
-    // area
-    area = d3.svg.area()
-      .x(function(d) {
-        return x(d.date);
-      })
-      .y0(height)
-      .y1(function(d) {
-        return y(d.value);
+      data.forEach(function(d) {
+        d.date = d.date instanceof Date ? d.date : parseDate(d.date);
+        d.value = +d.value;
       });
 
-    // line
-    valueline = d3.svg.line()
-      .x(function(d) {
-        return x(d.date);
-      })
-      .y(function(d) {
-        return y(d.value);
+      // store to current data
+      this.currentData = data;
+
+      return data;
+    },
+    /**
+     * @void Setup Dimensions
+     * @desc Setup instance dimansion based properties
+     */
+    setupDimensions: function() {
+      var self = this;
+
+      // dimensions of whole svg
+      this.outerWidth = parseInt(this.container.style('width'));
+      this.outerHeight = parseInt(this.container.style('height'));
+
+      // setup dimensions of chart
+      this.width = this.outerWidth - this.margin.left - this.margin.right;
+      this.height = this.outerHeight - this.margin.top - this.margin.bottom;
+
+      // setup scales
+      this.x = d3.time.scale().range([0, this.width]);
+      this.y = d3.scale.linear().range([this.height, 0]);
+
+      // setup axis
+      this.xAxis = this.make_x_axis().tickSize(0,0,0);
+      this.yAxis = this.make_y_axis().tickSize(10,0,0);
+
+      // setup grid
+      this.grid = this.make_y_axis().tickSize(-self.width, 0, 0).tickFormat('');
+    },
+    /**
+     * @void setup chart
+     * @desc prepare svg
+     */
+    setupChart: function() {
+      var self = this;
+
+      // SVG – main element
+      this.svg = this.container
+        .append('svg')
+        .append('g')
+        .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
+
+      // area
+      this.svg.append('path')
+        .attr('class', 'area');
+
+      // points group
+      this.svg.append('g')
+        .attr('class', 'points');
+
+      // grid
+      this.svg.append('g')
+        .attr('class', 'grid')
+        .call(self.grid);
+
+      // X axis
+      this.svg.append('g')
+        .attr('class', 'axis axis-x')
+        .call(self.xAxis);
+
+      // Y axis
+      this.svg.append('g')
+        .attr('class', 'axis axis-y')
+        .call(self.yAxis);
+    },
+    /**
+     * @void redraw
+     * @desc draw data to chart
+     * @param origData [array of Obj] !optional
+     */
+    redrawChart: function(origData) {
+      var self = this;
+      var svg = this.svg;
+      var duration = this.duration;
+
+      // parse data
+      var data = origData ? this.parse_data(origData) : this.currentData;
+
+      // stop if ther is no data;
+      if (!data) return false;
+
+      // Scale range of data
+      this.x.domain(d3.extent(data, function(d) {
+        return d.date;
+      }));
+
+      this.y.domain([0, d3.max(data, function(d) {
+        return d.value;
+      })*1.1]); // add 10% extra vertical space
+
+      // define point
+      var point = svg.select('.points').selectAll('.point').data(data, function(d) {
+        return d.date;
       });
 
-    // draw area
-    svg.append('path')
-      .attr('class', 'area');
+      // define area
+      var area = d3.svg.area()
+        .x(function(d) {
+          return self.x(d.date);
+        })
+        .y0(self.height)
+        .y1(function(d) {
+          return self.y(d.value);
+        });
 
-    // add line
-    //svg.append('path')
-      //.attr('class', 'value-line');
+      // point enter
+      point.enter()
+        .append('g')
+          .attr('class', 'point')
+          .append('circle')
+            .attr('cx', function(d) {
+              return self.x(d.date);
+            })
+            .attr('cy', function(d) {
+              return self.y(d.value);
+            })
+            .attr('r', 4);
 
-    // add points group
-    svg.append('g')
-      .attr('class', 'points');
+      // point transition
+      point.transition()
+        .duration(duration)
+          .select('circle')
+            .attr('cx', function(d) {
+              return self.x(d.date);
+            })
+            .attr('cy', function(d) {
+              return self.y(d.value);
+            });
 
-    // Draw grid
-    svg.append('g')
-      .attr('class', 'grid')
-      .call(grid);
-
-    // draw X axis
-    svg.append('g')
-      .attr('class', 'axis axis-x')
-      .call(xAxis);
-
-    // draw Y axis
-    svg.append('g')
-      .attr('class', 'axis axis-y')
-      .call(yAxis);
-
-    update_ticks();
-  }
-
-  /**
-   * Update data
-   */
-
-  function updateData(data) {
-
-    parse_data(data);
-
-    // Scale range of data
-    x.domain(d3.extent(data, function(d) {
-      return d.date;
-    }));
-
-    y.domain([0, d3.max(data, function(d) {
-      return d.value;
-    })*1.1]); // add extra 10% space on top
-
-    // points
-    var point = svg.select('.points').selectAll('.point').data(data, function(d) {
-      return d.date;
-    });
-
-    // enter
-    point.enter()
-      .append('g')
-        .attr('class', 'point')
-        .append('circle')
-          .attr('r', 0)
-          .attr('cx', function(d) {
-            return x(d.date);
-          })
-          .attr('cy', function(d) {
-            return y(d.value);
-          })
-          .attr('r', 4);
-
-    // transition
-    point.transition()
-      .duration(duration)
+      // kill point
+      point.exit().transition()
+        .duration(duration)
+        .remove()
         .select('circle')
-          .attr('cx', function(d) {
-            return x(d.date);
-          })
-          .attr('cy', function(d) {
-            return y(d.value);
-          });
+          .attr('r', 0);
 
-    // exit
-    point.exit().transition().duration(duration)
-      .remove()
-      .select('circle')
-        .attr('r', 0);
+      // redraw area
+      svg.select('.area').transition()
+        .duration(duration)
+        .attr('d', area(data));
 
-    // update area
-    svg.select('.area').transition()
-      .duration(duration)
-      .attr('d', area(data));
+      // update axis
+      svg.select('.axis-x').transition()
+        .duration(duration)
+        .call(self.xAxis);
 
-    // update value line
-    //svg.select('.value-line').transition()
-      //.duration(duration)
-      //.attr('d', valueline(data));
+      svg.select('.axis-y').transition()
+        .duration(duration)
+        .call(self.yAxis);
 
-    // update axis
-    svg.select('.axis-x').transition()
-      .duration(duration)
-      .call(xAxis);
+      // update Grid
+      svg.select('.grid').transition()
+        .duration(duration)
+        .call(self.grid);
+    },
+    /**
+     * @void resize
+     * @desc For renponsive
+     * @param data [array of obj] !optional
+     */
+    resize: function(data) {
+      this.setupDimensions();
+      this.redrawChart(data);
+    },
+  };
 
-    svg.select('.axis-y').transition()
-      .duration(duration)
-      .call(yAxis);
+  // wrap selector logic
+  var _wrap = function(selector, data) {
+    if (window.d3) {
 
-    // update Grid
-    svg.selectAll('.grid').transition()
-      .duration(duration)
-      .call(grid);
+      var element = d3.select(selector);
 
-    update_ticks();
-  }
+      if (!element) {
 
+        console.log('Element ' + selector + ' was not found.');
+        return false;
+      }
 
-  var btn2 = document.getElementById('revertBtn');
-  btn2.onclick = revert;
+      // set container of instance
+      this.container = element;
 
+      // set current data or empty array
+      this.currentData = data ? data : null;
+    } else {
+      // d3 is not defined
+      console.log('this plugin require d3.js');
+    }
+  };
 
-  // update data
-  function revert() {
-    d3.json('../data/fixtures.json', function(error, data) {
-      currentData = data;
+  // set prototype
+  _wrap.prototype = proto_methods;
 
-      updateData(data);
-    });
-  }
+  // Global class namespace
+  window.d34ResCh = function(selector, data) {
+    selector = new _wrap(selector, data);
 
-  // Change data logic
-
-  var btn = document.getElementById('updateBtn');
-  btn.onclick = update;
-
-  function update() {
-    d3.json('../data/fixtures-alt.json', function(error, data) {
-      currentData = data;
-
-      updateData(data);
-    });
-  }
-
-  // responsive
-  $(window).on('resize', function() {
-    outerWidth = parseInt(container.style('width'));
-    outerHeight = parseInt(container.style('height'));
-
-
-    width = outerWidth - margin.left - margin.right;
-    height = outerHeight - margin.top - margin.bottom;
-
-    x = d3.time.scale().range([0, width]);
-    y = d3.scale.linear().range([height, 0]);
-
-    xAxis = make_x_axis()
-          .tickSize(0,0,0);
-
-    // Y axis
-    yAxis = make_y_axis()
-           .tickSize(10,0,0);
-
-    grid = make_y_axis()
-          .tickSize(-width, 0, 0)
-          .tickFormat('');
-
-    svg = container
-      .select('svg')
-      .attr('width', outerWidth)
-      .attr('height', outerHeight);
-
-    updateData(currentData);
-  });
-
-
-  // init
-
-  // setup
-  setupDimensions();
-  setupChart();
-  revert();
-
+    return selector.init();
+  };
 })();

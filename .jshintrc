@@ -1,5 +1,5 @@
 {
   "undef": true,
   "unused": true,
-  "predef": [ "d3", "document", "window" ]
+  "predef": [ "d3", "document", "window", "console" ]
 }
