@@ -1,10 +1,10 @@
 {
-  "name": "d3js-text",
-  "version": "0.0.0",
+  "name": "d34ResCh",
+  "version": "1.0.0",
   "authors": [
     "Marek Fajkus <marek.faj@gmail.com>"
   ],
-  "main": "index.html",
+  "main": "d34ResCh.js",
   "license": "MIT",
   "private": true,
   "ignore": [
@@ -15,7 +15,6 @@
     "tests"
   ],
   "dependencies": {
-    "d3": "~3.4.8",
-    "jquery": "~2.1.1"
+    "d3": "~3.4.8"
   }
 }

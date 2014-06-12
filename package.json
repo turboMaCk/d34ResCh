@@ -1,8 +1,8 @@
 {
-  "name": "d3js",
-  "version": "0.0.0",
+  "name": "d34ResCh",
+  "version": "1.0.0",
   "description": "",
-  "main": "index.html",
+  "main": "d34ResCh.js",
   "scripts": {
     "test": "test"
   },

@@ -1,12 +1,10 @@
-// scripts/main-chart.js
+// scripts/d3.4resch.js
 
 (function() {
 
   // Plugin class namespace
   var proto_methods = {
-    init: function(selector) {
-      var self = this;
-
+    init: function() {
       // margins
       this.margin = {
         top: 30,
@@ -31,7 +29,7 @@
       this.setupDimensions();
       this.setupChart();
 
-      this.redrawChart(self.currentData);
+      this.redrawChart(this.currentData);
 
       // return instance
       return this;

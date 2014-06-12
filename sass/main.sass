@@ -1,8 +1,11 @@
 @import 'compass'
 @import 'compass/reset'
 
+$color--fancy: #22C682
+
 #main-chart,
 #main-chart2
+  height: 300px
   margin: 20px
 
 body
@@ -10,12 +13,12 @@ body
   background: #F2F2F2
 
 path
-  stroke: #22C682
+  stroke: $color--fancy
   stroke-width: 2
   fill: none
 
 .area
-  fill: #22C682
+  fill: $color--fancy
   stroke-width: 0
 
 .axis
@@ -31,7 +34,7 @@ path
 
 .point
   stroke-width: 2px
-  stroke: #22C682
+  stroke: $color--fancy
   fill: #ffffff
 
 %doted-line
