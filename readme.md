@@ -31,7 +31,7 @@ Simply create new instance of d34ResCh (pseudo) class with **selector of chart c
 
 Example code:
 
-    var chart = d34ResCh('#chart', [
+    var chart = new d34ResCh('#chart', [
       {
         date: '01-01-2014',
         value: 5
