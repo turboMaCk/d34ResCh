@@ -90,7 +90,7 @@
     grid = make_y_axis()
           .tickSize(-width, 0, 0)
           .tickFormat('');
-  };
+  }
 
   var svg, area, valueline;
 
@@ -285,7 +285,7 @@
     svg = container
       .select('svg')
       .attr('width', outerWidth)
-      .attr('height', outerHeight)
+      .attr('height', outerHeight);
 
     updateData(currentData);
   });
