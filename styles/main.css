@@ -27,7 +27,14 @@ path {
   stroke-width: 0 !important;
 }
 
-/* line 28, ../sass/main.sass */
+/* line 27, ../sass/main.sass */
+.point {
+  stroke-width: 2px;
+  stroke: #22c682;
+  fill: white;
+}
+
+/* line 33, ../sass/main.sass */
 .axis line, .grid line,
 .axis path,
 .grid path {
