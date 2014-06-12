@@ -1,4 +1,8 @@
 (function() {
+  var container = d3.select('#main-chart');
+
+  var currentData;
+
 
   /**
    * BASIC CONFIG
@@ -12,8 +16,8 @@
   };
 
   // size
-  var outerWidth = 1600;
-  var outerHeight = 400;
+  var outerWidth = parseInt(container.style('width'));
+  var outerHeight = parseInt(container.style('height'));
 
   // others
   var numberOfTicks = {
@@ -61,7 +65,7 @@
 
   function parse_data(data) {
     var parseData = data.forEach(function(d) {
-      d.date = parseDate(d.date);
+      d.date = d.date instanceof Date ?  d.date : parseDate(d.date);
       d.value = +d.value;
     });
 
@@ -73,12 +77,10 @@
    */
 
   // SVG – main element
-  var svg = d3.select('body')
+  var svg = container
     .append('svg')
     .attr('width', outerWidth)
     .attr('height', outerHeight)
-    .attr('viewBox', "0 0 " + outerWidth + " " + outerHeight)
-    .attr('preserveAspectRatio', 'xMidYMid')
     .append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
@@ -89,6 +91,15 @@
     })
     .y0(height)
     .y1(function(d) {
+      return y(d.value);
+    });
+
+  // line
+  var valueline = d3.svg.line()
+    .x(function(d) {
+      return x(d.date);
+    })
+    .y(function(d) {
       return y(d.value);
     });
 
@@ -122,39 +133,50 @@
     })*1.1]); // add extra 10% space on top
 
     // points
-    var point = svg.selectAll('.point').data(data, function(d) {
+    var point = svg.select('.points').selectAll('.point').data(data, function(d) {
       return d.date;
     });
 
     // enter
     point.enter()
-      .append('circle')
+      .append('g')
         .attr('class', 'point')
-        .attr('r', 4)
-        .attr('cx', function(d) {
-          return x(d.date);
-        })
-        .attr('cy', function(d) {
-          return y(d.value);
-        });
+        .append('circle')
+          .attr('r', 0)
+          .attr('cx', function(d) {
+            return x(d.date);
+          })
+          .attr('cy', function(d) {
+            return y(d.value);
+          })
+          .attr('r', 4);
 
     // transition
     point.transition()
       .duration(750)
-        .attr('cx', function(d) {
-          return x(d.date);
-        })
-        .attr('cy', function(d) {
-          return y(d.value);
-        });
+        .select('circle')
+          .attr('cx', function(d) {
+            return x(d.date);
+          })
+          .attr('cy', function(d) {
+            return y(d.value);
+          });
 
     // exit
-    point.exit().transition().duration(750).attr('r', 0).remove();
+    point.exit().transition().duration(750)
+      .remove()
+      .select('circle')
+        .attr('r', 0);
 
     // update area
     svg.select('.area').transition()
       .duration(750)
       .attr('d', area(data));
+
+    // update value line
+    //svg.select('.value-line').transition()
+      //.duration(750)
+      //.attr('d', valueline(data));
 
     // update axis
     svg.select('.axis-x').transition()
@@ -178,6 +200,14 @@
     // draw area
     svg.append('path')
       .attr('class', 'area');
+
+    // add line
+    //svg.append('path')
+      //.attr('class', 'value-line');
+
+    // add points group
+    svg.append('g')
+      .attr('class', 'points');
 
     // Draw grid
     svg.append('g')
@@ -208,6 +238,8 @@
   // update data
   function revert() {
     d3.json('../data/fixtures.json', function(error, data) {
+      currentData = data;
+
       updateData(data);
     });
   }
@@ -219,8 +251,41 @@
 
   function update() {
     d3.json('../data/fixtures-alt.json', function(error, data) {
+      currentData = data;
+
       updateData(data);
     });
   }
+
+  // responsive
+  $(window).on('resize', function() {
+    outerWidth = parseInt(container.style('width'));
+    outerHeight = parseInt(container.style('height'));
+
+
+    width = outerWidth - margin.left - margin.right;
+    height = outerHeight - margin.top - margin.bottom;
+
+    x = d3.time.scale().range([0, width]);
+    y = d3.scale.linear().range([height, 0]);
+
+    xAxis = make_x_axis()
+          .tickSize(0,0,0);
+
+    // Y axis
+    yAxis = make_y_axis()
+           .tickSize(10,0,0);
+
+    grid = make_y_axis()
+          .tickSize(-width, 0, 0)
+          .tickFormat('');
+
+    svg = container
+      .select('svg')
+      .attr('width', outerWidth)
+      .attr('height', outerHeight)
+
+    updateData(currentData);
+  });
 
 })();
