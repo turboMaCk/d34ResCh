@@ -4,7 +4,7 @@ This project is a prototype of *advanced in-browser responsive charts* based on 
 Project demonstrate **responsive** and **OOP** solution in pure *java-script* with *D3.js*
 It also came with basic *grunt.js* server and easy *bower* and *npm* installation.
 
-![alt chart](http://postimg.org/image/r1ld01egn/)
+![alt chart](http://s15.postimg.org/knw9ws9kp/charts.gif)
 
 Run project
 --------------
