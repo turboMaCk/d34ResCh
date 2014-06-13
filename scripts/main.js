@@ -3,16 +3,16 @@
 /* global d34ResCh */
 
 (function() {
-  var chart;
+  var chart = d34ResCh('#main-chart');
 
   d3.json('../data/fixtures.json', function(error, data) {
 
     // init with data
-    chart = d34ResCh('#main-chart', data);
+    chart = d34ResCh('#main-chart').mainChart(data);
   });
 
   // init
-  var chart2 = d34ResCh('#main-chart2');
+  var chart2 = d34ResCh('#main-chart2').mainChart();
 
   d3.json('../data/fixtures-alt.json', function(error, data) {
 

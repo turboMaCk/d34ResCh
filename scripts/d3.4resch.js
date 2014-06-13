@@ -2,8 +2,16 @@
 
 (function() {
 
+  var mainChart = function(element, data) {
+    this.container = element;
+
+    if (data) {
+      this.currentData = data
+    }
+  };
+
   // Plugin class namespace
-  var proto_methods = {
+  mainChart.prototype = {
     init: function() {
       // margins
       this.margin = {
@@ -112,6 +120,7 @@
       // SVG – main element
       this.svg = this.container
         .append('svg')
+        .attr('class', 'main-chart')
         .append('g')
         .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
@@ -241,34 +250,46 @@
 
   // wrap selector logic
   var _wrap = function(selector, data) {
-    if (window.d3) {
 
-      var element = d3.select(selector);
+    var element = d3.select(selector);
 
-      if (!element) {
-
-        console.log('Element ' + selector + ' was not found.');
-        return false;
-      }
-
-      // set container of instance
-      this.container = element;
-
-      // set current data or empty array
-      this.currentData = data ? data : null;
-    } else {
-      // d3 is not defined
+    // check if d3 is set
+    if (!window.d3) {
       console.log('this plugin require d3.js');
+      return false;
     }
+
+    // check if element exists
+    if (!element) {
+      console.log('Element ' + selector + ' was not found.');
+      return false;
+    }
+
+    // set container of instance
+    this.element = element;
+
+    // set current data or empty array
+    this.currentData = data ? data : null;
+
+    return this;
   };
 
   // set prototype
-  _wrap.prototype = proto_methods;
+  _wrap.prototype = {
+    mainChart: function(data) {
+
+      if (!data) {
+        data = this.currentData;
+      }
+
+      var chart = new mainChart(this.element, data);
+
+      return chart.init();
+    }
+  };
 
   // Global class namespace
   window.d34ResCh = function(selector, data) {
-    selector = new _wrap(selector, data);
-
-    return selector.init();
+    return new _wrap(selector, data);
   };
 })();
