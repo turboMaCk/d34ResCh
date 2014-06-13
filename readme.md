@@ -25,13 +25,13 @@ Run grunt for taking care about tasks
 
 How to initialize charts
 --------------
-Simply create new instance of d34ResCh (pseudo) class with **selector of chart container** and **data** params:
+Simply create instance of d34ResCh (pseudo) class with **selector of chart container** and **data** params:
 
-    new d34ResCh('[container-id]', [data]];
+    d34ResCh('[container-id]', [data]];
 
 Example code:
 
-    var chart = new d34ResCh('#chart', [
+    var chart = d34ResCh('#chart', [
       {
         date: '01-01-2014',
         value: 5
