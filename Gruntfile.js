@@ -1,9 +1,19 @@
+/* global module */
+
 module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     jshint: {
-      all: ['scripts/**/*.js'],
+      all: ['src/**/*.js'],
       gruntfile: ['Gruntfile.js']
+    },
+    includes: {
+      app: {
+        src: ['src/d3.4resch.js'],
+        dest: 'tmp',
+        flatten: true,
+        cwd: '.'
+      }
     },
     compass: {
       dist: {
@@ -24,9 +34,13 @@ module.exports = function(grunt) {
       gruntfile: {
         files: 'Gruntfile.js',
       },
-      src: {
-        files: ['index.html', 'scripts/**/*.js', 'styles/**/*.css', 'data/**/*.{json,tsv,csv,xml}'],
+      hint: {
+        files: ['index.html', 'src/**/*.js', 'styles/**/*.css', 'data/**/*.{json,tsv,csv,xml}'],
         tasks: ['jshint']
+      },
+      include: {
+        files: ['src/**/*.js'],
+        tasks: ['includes:app']
       },
       compass: {
         files: ['sass/**/*.{sass,scss}'],
@@ -43,11 +57,10 @@ module.exports = function(grunt) {
         }
       }
     },
-    livereload: {
-    }
-  });
+ });
 
   // load modules
+  grunt.loadNpmTasks('grunt-includes');
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-livereload');
@@ -55,5 +68,5 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compass');
 
   // tasks register
-  grunt.registerTask('default', ['jshint', 'compass:dev', 'connect', 'watch']);
+  grunt.registerTask('default', ['jshint', 'includes:app', 'compass:dev', 'connect', 'watch']);
 };
