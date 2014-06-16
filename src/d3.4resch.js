@@ -1,11 +1,13 @@
-// src/main.js
+// src/d3.4resch.js
 
-/* global mainChart */
+/* global mainChart, miniChart */
 
 // imports
 /*jshint ignore:start */
 
 include "main-chart.js"
+include "mini-chart.js"
+include "progress-chart.js"
 
 /*jshint ignore:end */
 
@@ -44,6 +46,16 @@ _wrap.prototype = {
     }
 
     var chart = new mainChart(this.element, data);
+
+    return chart.init();
+  },
+  miniChart: function(data) {
+
+    if (!data) {
+      data = this.currentData;
+    }
+
+    var chart = new miniChart(this.element, data);
 
     return chart.init();
   }

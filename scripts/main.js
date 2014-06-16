@@ -12,7 +12,7 @@
   });
 
   // init
-  var chart2 = d34ResCh('#main-chart2').mainChart();
+  var chart2 = d34ResCh('#main-chart2').miniChart();
 
   d3.json('../data/fixtures-alt.json', function(error, data) {
 

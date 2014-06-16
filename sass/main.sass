@@ -2,24 +2,34 @@
 @import 'compass/reset'
 
 $color--fancy: #22C682
+$color--second: #A1D8E6
 
 #main-chart,
-#main-chart2
   height: 300px
   margin: 20px
+
+#main-chart2
+  height: 50px
+  max-width: 200px
 
 body
   font: 12px Arial
   background: #F2F2F2
 
-path
-  stroke: $color--fancy
-  stroke-width: 2
-  fill: none
+.mini-chart
+  .area
+    fill: $color--second
+    stroke-width: 0
 
-.area
-  fill: $color--fancy
-  stroke-width: 0
+.main-chart
+  path
+    stroke: $color--fancy
+    stroke-width: 2
+    fill: none
+
+  .area
+    fill: $color--fancy
+    stroke-width: 0
 
 .axis
   @extend %doted-line

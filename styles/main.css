@@ -63,50 +63,60 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
-/* line 6, ../sass/main.sass */
-#main-chart,
-#main-chart2 {
+/* line 7, ../sass/main.sass */
+#main-chart {
   height: 300px;
   margin: 20px;
 }
 
 /* line 11, ../sass/main.sass */
+#main-chart2 {
+  height: 50px;
+  max-width: 200px;
+}
+
+/* line 15, ../sass/main.sass */
 body {
   font: 12px Arial;
   background: #f2f2f2;
 }
 
-/* line 15, ../sass/main.sass */
-path {
+/* line 20, ../sass/main.sass */
+.mini-chart .area {
+  fill: #a1d8e6;
+  stroke-width: 0;
+}
+
+/* line 25, ../sass/main.sass */
+.main-chart path {
   stroke: #22c682;
   stroke-width: 2;
   fill: none;
 }
-
-/* line 20, ../sass/main.sass */
-.area {
+/* line 30, ../sass/main.sass */
+.main-chart .area {
   fill: #22c682;
   stroke-width: 0;
 }
 
-/* line 26, ../sass/main.sass */
+/* line 36, ../sass/main.sass */
 .axis text {
   fill: #7f7f7f;
 }
 
-/* line 32, ../sass/main.sass */
+/* line 42, ../sass/main.sass */
 .grid path {
   stroke-width: 0 !important;
 }
 
-/* line 35, ../sass/main.sass */
+/* line 45, ../sass/main.sass */
 .point {
   stroke-width: 2px;
   stroke: #22c682;
   fill: white;
 }
 
-/* line 41, ../sass/main.sass */
+/* line 51, ../sass/main.sass */
 .axis line, .grid line,
 .axis path,
 .grid path {
@@ -118,7 +128,7 @@ path {
   stroke-dasharray: 2px, 2px;
 }
 
-/* line 50, ../sass/main.sass */
+/* line 60, ../sass/main.sass */
 .axis-x path {
   stroke-width: 0;
 }
