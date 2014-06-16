@@ -91,7 +91,6 @@ mainChart.prototype = {
     this.outerWidth = parseInt(this.container.style('width'));
     this.outerHeight = parseInt(this.container.style('height'));
 
-
     // setup dimensions of chart
     this.width = this.outerWidth - this.margin.left - this.margin.right;
     this.height = this.outerHeight - this.margin.top - this.margin.bottom;
@@ -157,6 +156,7 @@ mainChart.prototype = {
     // parse data
     var data = origData ? this.parse_data(origData) : this.currentData;
 
+    // set SVG height and width
     this.svg
       .attr('width', this.outerWidth)
       .attr('height', this.outerHeight);

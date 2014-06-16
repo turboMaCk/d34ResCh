@@ -40,4 +40,10 @@
 
   window.onresize = windowResize;
 
+  var table;
+
+  d3.json('../data/progress-table.json', function(error, data) {
+    table = d34ResCh('#progress-table').progressTable(data);
+  });
+
 })();
