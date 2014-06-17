@@ -46,4 +46,10 @@
     table = d34ResCh('#progress-table').progressTable(data);
   });
 
+  var pie = d34ResCh('.pie-chart').pieChart();
+
+  d3.json('../data/pie-chart.json', function(error, data) {
+    pie.redrawChart(data);
+  });
+
 })();

@@ -54,9 +54,13 @@ progressTable.prototype = {
   appendRow: function(data) {
     var tr = this.container.append('tr');
 
-    tr.append('td')
-      .attr('class', 'name')
-      .text(data.name);
+    var name = tr.append('td')
+        .attr('class', 'name');
+
+    name.append('i')
+        .attr('class', 'ico ico-document');
+
+    name.text(data.name);
 
     tr.append('td')
       .attr('class', 'progress')
@@ -78,11 +82,12 @@ progressTable.prototype = {
    * Update data
    * @desc render table
    */
-  updateData: function() {
+  updateData: function(data) {
     var self = this;
-    var data = this.currentData;
 
-    console.log(data);
+    if (!data) {
+      data = this.currentData;
+    }
 
     // escape if there is no data
     if (!data) {
@@ -90,5 +95,12 @@ progressTable.prototype = {
     }
 
     this.currentData.map(self.appendRow, this);
+  },
+  /**
+   * Clean table
+   * @desc clean all table rows
+   */
+  cleanTable: function() {
+    this.container.selectAll('tr').remove();
   }
 };

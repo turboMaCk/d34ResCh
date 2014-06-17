@@ -4,6 +4,11 @@
 $color--fancy: #22C682
 $color--second: #A1D8E6
 
+.box
+  background: #fff
+  padding: 10px
+  width: 50%
+
 #main-chart,
   height: 300px
   margin: 20px
@@ -13,14 +18,21 @@ $color--second: #A1D8E6
   max-width: 200px
 
 #progress-table
-  width: 50%
+  width: 100%
+  td
+    text-align: center
+  .name
+    text-align: left
+  tr
+    border-top: 1px #B0B0B0 dotted
+    height: 30px
   .progress
-    width: 40%
+    width: 55%
+    padding: 10px
     .progress-container
-      background: gray
+      background: #F2F2F2
       display: block
-      width: 100%
-      height: 10px
+      height: 4px
     .progress-bar
       display: block
       float: left

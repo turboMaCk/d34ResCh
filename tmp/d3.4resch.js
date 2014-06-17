@@ -1,6 +1,6 @@
 // src/d3.4resch.js
 
-/* global mainChart, miniChart, progressTable */
+/* global mainChart, miniChart, progressTable, pieChart */
 
 // imports
 /*jshint ignore:start */
@@ -153,22 +153,22 @@ mainChart.prototype = {
   /**
    * @void redraw
    * @desc draw data to chart
-   * @param origData [array of Obj] !optional
+   * @param newdata [array of Obj] !optional
    */
-  redrawChart: function(origData) {
+  redrawChart: function(newData) {
     var self = this;
     var svg = this.svg;
     var duration = this.duration;
 
     // parse data
-    var data = origData ? this.parse_data(origData) : this.currentData;
+    var data = newData ? this.parse_data(newData) : this.currentData;
 
     // set SVG height and width
     this.svg
       .attr('width', this.outerWidth)
       .attr('height', this.outerHeight);
 
-    // stop if ther is no data;
+    // stop if there is no data;
     if (!data) return false;
 
     // Scale range of data
@@ -456,9 +456,13 @@ progressTable.prototype = {
   appendRow: function(data) {
     var tr = this.container.append('tr');
 
-    tr.append('td')
-      .attr('class', 'name')
-      .text(data.name);
+    var name = tr.append('td')
+        .attr('class', 'name');
+
+    name.append('i')
+        .attr('class', 'ico ico-document');
+
+    name.text(data.name);
 
     tr.append('td')
       .attr('class', 'progress')
@@ -480,11 +484,12 @@ progressTable.prototype = {
    * Update data
    * @desc render table
    */
-  updateData: function() {
+  updateData: function(data) {
     var self = this;
-    var data = this.currentData;
 
-    console.log(data);
+    if (!data) {
+      data = this.currentData;
+    }
 
     // escape if there is no data
     if (!data) {
@@ -492,6 +497,118 @@ progressTable.prototype = {
     }
 
     this.currentData.map(self.appendRow, this);
+  },
+  /**
+   * Clean table
+   * @desc clean all table rows
+   */
+  cleanTable: function() {
+    this.container.selectAll('tr').remove();
+  }
+};
+
+var pieChart = function(element, data) {
+  this.container = element;
+
+  if (data) {
+    this.currentData = data;
+  }
+};
+
+pieChart.prototype = {
+  init: function() {
+
+    // margins
+    this.margin = {
+      top: 30,
+      right: 20,
+      bottom: 75,
+      left: 20,
+    };
+
+    // duration of animations
+    this.duration = 750;
+
+    this.outerRadius = 70;
+    this.innerRadius = 50;
+
+    // first setup
+    this.setupDimensions();
+
+    this.setupChart();
+
+    return this;
+  },
+  /**
+   * Parse data
+   * @desc if data needs to be parsed
+   * @param data [data - array of objects]
+   */
+  parse_data: function(data) {
+    return data;
+  },
+  /**
+   * Arc
+   * @arg start [int] - radians
+   * @arg end [int] - radians
+   */
+  arc: function(start, end) {
+    var start = 45 * (Math.PI/180) * start
+    return d3.svg.arc()
+      .innerRadius(this.innerRadius)
+      .outerRadius(this.outerRadius)
+      .startAngle(start)
+      .endAngle(end);
+  },
+  /**
+   * Setup dimensions
+   * @desc Setup charts dimensions
+   */
+  setupDimensions: function() {
+
+    // dimensions of whole svg
+    this.outerWidth = parseInt(this.container.style('width'));
+    this.outerHeight = parseInt(this.container.style('height'));
+
+    // setup dimensions of chart
+    this.width = this.outerWidth - this.margin.left - this.margin.right;
+    this.height = this.outerHeight - this.margin.top - this.margin.bottom;
+
+    this.arc = d3.svg.arc()
+      .outerRadius();
+
+  },
+  /**
+   * Setup Chart
+   * @desc generate chart's structure
+   * @return instace of this
+   */
+  setupChart: function() {
+    //var self = this;
+
+    // define svg
+    this.svg = this.container
+      .append('svg')
+      .attr('class', 'pie-chart')
+      .append('g')
+      .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
+
+    return this;
+  },
+  redrawChart: function(newData) {
+    var self = this;
+    var svg = this.svg;
+    var duration = this.duration;
+
+    // parse data
+    var data = newData ? this.parse_data(data) : this.currentData;
+
+    // stop if there is no data
+    if (!data) return false;
+
+    data.forEach(function(d) {
+      self.svg.append('path').call(self.arc(1,d.value));
+    });
   }
 };
 
@@ -553,6 +670,16 @@ _wrap.prototype = {
     }
 
     var chart = new progressTable(this.element, data);
+
+    return chart.init();
+  },
+  pieChart: function(data) {
+
+    if (!data) {
+      data = this.currentData;
+    }
+
+    var chart = new pieChart(this.element, data);
 
     return chart.init();
   }

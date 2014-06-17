@@ -1,6 +1,6 @@
 // src/d3.4resch.js
 
-/* global mainChart, miniChart, progressTable */
+/* global mainChart, miniChart, progressTable, pieChart */
 
 // imports
 /*jshint ignore:start */
@@ -8,6 +8,7 @@
 include "main-chart.js"
 include "mini-chart.js"
 include "progress-table.js"
+include "pie-chart.js"
 
 /*jshint ignore:end */
 
@@ -66,6 +67,16 @@ _wrap.prototype = {
     }
 
     var chart = new progressTable(this.element, data);
+
+    return chart.init();
+  },
+  pieChart: function(data) {
+
+    if (!data) {
+      data = this.currentData;
+    }
+
+    var chart = new pieChart(this.element, data);
 
     return chart.init();
   }

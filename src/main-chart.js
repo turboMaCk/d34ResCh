@@ -146,22 +146,22 @@ mainChart.prototype = {
   /**
    * @void redraw
    * @desc draw data to chart
-   * @param origData [array of Obj] !optional
+   * @param newdata [array of Obj] !optional
    */
-  redrawChart: function(origData) {
+  redrawChart: function(newData) {
     var self = this;
     var svg = this.svg;
     var duration = this.duration;
 
     // parse data
-    var data = origData ? this.parse_data(origData) : this.currentData;
+    var data = newData ? this.parse_data(newData) : this.currentData;
 
     // set SVG height and width
     this.svg
       .attr('width', this.outerWidth)
       .attr('height', this.outerHeight);
 
-    // stop if ther is no data;
+    // stop if there is no data;
     if (!data) return false;
 
     // Scale range of data
