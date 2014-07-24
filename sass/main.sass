@@ -6,7 +6,6 @@ $color--second: #A1D8E6
 
 .box
   background: #fff
-  padding: 10px
   width: 50%
 
 #main-chart,
@@ -19,25 +18,40 @@ $color--second: #A1D8E6
 
 #progress-table
   width: 100%
+
   td
     text-align: center
+
+  .percents,
+  .value
+    width: 50px
+
   .name
     text-align: left
+    width: 100px
+    padding-left: 10px
+
   tr
     border-top: 1px #B0B0B0 dotted
-    height: 30px
+    height: 50px
+
   .progress
-    width: 55%
     padding: 10px
+
     .progress-container
       background: #F2F2F2
       display: block
       height: 4px
+
     .progress-bar
       display: block
       float: left
       background: $color--fancy
       height: 100%
+
+.pie-chart
+  height: 500px
+  width: 50%
 
 body
   font: 12px Arial
