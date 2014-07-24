@@ -32,13 +32,6 @@
     chart2.redrawChart(a);
   };
 
-  // use dimension event
-  function windowResize() {
-    chart2.resize();
-    chart.resize();
-  }
-
-  window.onresize = windowResize;
 
   var table;
 
@@ -49,7 +42,21 @@
   var pie = d34ResCh('.pie-chart').pieChart();
 
   d3.json('../data/pie-chart.json', function(error, data) {
+
     pie.redrawChart(data);
   });
 
+  this.setTimeout(function() {
+    d3.json('../data/pie2.json', function(error, data) {
+      pie.redrawChart(data);
+    });
+  }, 4000);
+
+  // use dimension event
+  function windowResize() {
+    chart2.resize();
+    chart.resize();
+  }
+
+  window.onresize = windowResize;
 })();

@@ -66,23 +66,22 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* line 7, ../sass/main.sass */
 .box {
   background: white;
-  padding: 10px;
   width: 50%;
 }
 
-/* line 12, ../sass/main.sass */
+/* line 11, ../sass/main.sass */
 #main-chart {
   height: 300px;
   margin: 20px;
 }
 
-/* line 16, ../sass/main.sass */
+/* line 15, ../sass/main.sass */
 #main-chart2 {
   height: 50px;
   max-width: 200px;
 }
 
-/* line 20, ../sass/main.sass */
+/* line 19, ../sass/main.sass */
 #progress-table {
   width: 100%;
 }
@@ -90,27 +89,33 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 #progress-table td {
   text-align: center;
 }
-/* line 24, ../sass/main.sass */
-#progress-table .name {
-  text-align: left;
-}
-/* line 26, ../sass/main.sass */
-#progress-table tr {
-  border-top: 1px #b0b0b0 dotted;
-  height: 30px;
+/* line 25, ../sass/main.sass */
+#progress-table .percents,
+#progress-table .value {
+  width: 50px;
 }
 /* line 29, ../sass/main.sass */
+#progress-table .name {
+  text-align: left;
+  width: 100px;
+  padding-left: 10px;
+}
+/* line 34, ../sass/main.sass */
+#progress-table tr {
+  border-top: 1px #b0b0b0 dotted;
+  height: 50px;
+}
+/* line 38, ../sass/main.sass */
 #progress-table .progress {
-  width: 55%;
   padding: 10px;
 }
-/* line 32, ../sass/main.sass */
+/* line 41, ../sass/main.sass */
 #progress-table .progress .progress-container {
   background: #f2f2f2;
   display: block;
   height: 4px;
 }
-/* line 36, ../sass/main.sass */
+/* line 46, ../sass/main.sass */
 #progress-table .progress .progress-bar {
   display: block;
   float: left;
@@ -118,48 +123,54 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   height: 100%;
 }
 
-/* line 42, ../sass/main.sass */
+/* line 52, ../sass/main.sass */
+.pie-chart {
+  height: 500px;
+  width: 50%;
+}
+
+/* line 56, ../sass/main.sass */
 body {
   font: 12px Arial;
   background: #f2f2f2;
 }
 
-/* line 47, ../sass/main.sass */
+/* line 61, ../sass/main.sass */
 .mini-chart .area {
   fill: #a1d8e6;
   stroke-width: 0;
 }
 
-/* line 52, ../sass/main.sass */
+/* line 66, ../sass/main.sass */
 .main-chart path {
   stroke: #22c682;
   stroke-width: 2;
   fill: none;
 }
-/* line 57, ../sass/main.sass */
+/* line 71, ../sass/main.sass */
 .main-chart .area {
   fill: #22c682;
   stroke-width: 0;
 }
 
-/* line 63, ../sass/main.sass */
+/* line 77, ../sass/main.sass */
 .axis text {
   fill: #7f7f7f;
 }
 
-/* line 69, ../sass/main.sass */
+/* line 83, ../sass/main.sass */
 .grid path {
   stroke-width: 0 !important;
 }
 
-/* line 72, ../sass/main.sass */
+/* line 86, ../sass/main.sass */
 .point {
   stroke-width: 2px;
   stroke: #22c682;
   fill: white;
 }
 
-/* line 78, ../sass/main.sass */
+/* line 92, ../sass/main.sass */
 .axis line, .grid line,
 .axis path,
 .grid path {
@@ -171,7 +182,7 @@ body {
   stroke-dasharray: 2px, 2px;
 }
 
-/* line 87, ../sass/main.sass */
+/* line 101, ../sass/main.sass */
 .axis-x path {
   stroke-width: 0;
 }
