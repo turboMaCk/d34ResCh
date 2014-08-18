@@ -123,6 +123,8 @@ mainChart.prototype = {
     // SVG – main element
     this.svg = this.container
       .append('svg')
+      .attr('width', this.outerWidth)
+      .attr('height', this.outerHeight)
       .attr('class', 'main-chart')
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
