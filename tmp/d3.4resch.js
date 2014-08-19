@@ -123,32 +123,32 @@ mainChart.prototype = {
     // SVG – main element
     this.svg = this.container
       .append('svg')
-      .attr('width', this.outerWidth)
-      .attr('height', this.outerHeight)
-      .attr('class', 'main-chart')
+      .attr('class', 'main-chart');
+
+    this.mainGroup = this.svg
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     // area
-    this.svg.append('path')
+    this.mainGroup.append('path')
       .attr('class', 'area');
 
     // points group
-    this.svg.append('g')
+    this.mainGroup.append('g')
       .attr('class', 'points');
 
     // grid
-    this.svg.append('g')
+    this.mainGroup.append('g')
       .attr('class', 'grid')
       .call(self.grid);
 
     // X axis
-    this.svg.append('g')
+    this.mainGroup.append('g')
       .attr('class', 'axis axis-x')
       .call(self.xAxis);
 
     // Y axis
-    this.svg.append('g')
+    this.mainGroup.append('g')
       .attr('class', 'axis axis-y')
       .call(self.yAxis);
   },
@@ -168,7 +168,7 @@ mainChart.prototype = {
     // set SVG height and width
     this.svg
       .attr('width', this.outerWidth)
-      .attr('height', this.outerHeight);
+      .attr('height', this.outerHeight)
 
     // stop if there is no data;
     if (!data) return false;
