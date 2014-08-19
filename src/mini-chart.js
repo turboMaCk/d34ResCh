@@ -77,11 +77,13 @@ miniChart.prototype = {
     this.svg = this.container
       .append('svg')
       .attr('class', 'mini-chart')
+
+    this.mainGroup = this.svg
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     // area
-    this.svg.append('path')
+    this.mainGroup.append('path')
       .attr('class', 'area');
 
   },

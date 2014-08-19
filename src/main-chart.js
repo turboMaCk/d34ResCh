@@ -12,7 +12,7 @@ mainChart.prototype = {
     // margins
     this.margin = {
       top: 30,
-      right: 20,
+      right: 40,
       bottom: 40,
       left: 75
     };

@@ -19,7 +19,7 @@ mainChart.prototype = {
     // margins
     this.margin = {
       top: 30,
-      right: 20,
+      right: 40,
       bottom: 40,
       left: 75
     };
@@ -337,11 +337,13 @@ miniChart.prototype = {
     this.svg = this.container
       .append('svg')
       .attr('class', 'mini-chart')
+
+    this.mainGroup = this.svg
       .append('g')
       .attr('transform', 'translate(' + this.margin.left + ',' + this.margin.top + ')');
 
     // area
-    this.svg.append('path')
+    this.mainGroup.append('path')
       .attr('class', 'area');
 
   },
