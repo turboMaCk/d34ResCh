@@ -88,10 +88,12 @@ pieChart.prototype = {
       .append('g')
       .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
 
+    var legendTop = this.height + this.margin.bottom;
+
     this.legend = this.svg
       .append('g')
       .attr('class', 'legend')
-      .attr('transform', 'translate(' + this.outerHeight / 2 + ',' + this.height + ')');
+      .attr('transform', 'translate(' + this.margin.left + ',' + legendTop + ')');
 
     return this;
   },
@@ -137,13 +139,26 @@ pieChart.prototype = {
     var items = this.legend.selectAll('.item')
       .data(data);
 
-    items.enter().append('g')
+    var offest;
+
+    var item = items.enter().append('g')
       .attr('class', '.item')
-      .append('circle')
+      .attr('transform', function(d, i) {
+        offset = 150*i;
+
+        return 'translate(' + offset + ', 0)';
+      });
+
+    item.append('circle')
       .attr('r', 4)
       .style('fill', function(d) {
-        console.log(d);
         return self.color(d.value);
+      });
+
+    item.append('text')
+      .attr('transform', 'translate(10, 4)')
+      .text(function(d) {
+        return d.name;
       });
   }
 };
