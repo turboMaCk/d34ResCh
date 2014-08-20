@@ -161,7 +161,7 @@ mainChart.prototype = {
     // set SVG height and width
     this.svg
       .attr('width', this.outerWidth)
-      .attr('height', this.outerHeight)
+      .attr('height', this.outerHeight);
 
     // stop if there is no data;
     if (!data) return false;

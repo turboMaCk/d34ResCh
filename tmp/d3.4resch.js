@@ -168,7 +168,7 @@ mainChart.prototype = {
     // set SVG height and width
     this.svg
       .attr('width', this.outerWidth)
-      .attr('height', this.outerHeight)
+      .attr('height', this.outerHeight);
 
     // stop if there is no data;
     if (!data) return false;
@@ -336,7 +336,7 @@ miniChart.prototype = {
     // SVG – main element
     this.svg = this.container
       .append('svg')
-      .attr('class', 'mini-chart')
+      .attr('class', 'mini-chart');
 
     this.mainGroup = this.svg
       .append('g')

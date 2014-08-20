@@ -76,7 +76,7 @@ miniChart.prototype = {
     // SVG – main element
     this.svg = this.container
       .append('svg')
-      .attr('class', 'mini-chart')
+      .attr('class', 'mini-chart');
 
     this.mainGroup = this.svg
       .append('g')
