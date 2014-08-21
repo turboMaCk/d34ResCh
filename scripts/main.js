@@ -56,6 +56,7 @@
   function windowResize() {
     chart2.resize();
     chart.resize();
+    pie.resize();
   }
 
   window.onresize = windowResize;

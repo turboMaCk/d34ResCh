@@ -540,6 +540,8 @@ pieChart.prototype = {
 
     this.setupChart();
 
+    this.resizeChart();
+
     this.redrawChart(this.currentData);
 
     return this;
@@ -572,17 +574,6 @@ pieChart.prototype = {
     this.outerRadius = Math.min(self.width, self.height) / 2;
     this.innerRadius = self.outerRadius - this.thickness;
 
-    // setup pie parts
-    this.arc = d3.svg.arc()
-      .outerRadius(self.outerRadius)
-      .innerRadius(self.innerRadius);
-
-    this.pie = d3.layout.pie()
-      .sort(null)
-      .value(function(d) {
-        return d.value;
-      });
-
     return this;
   },
   /**
@@ -591,6 +582,8 @@ pieChart.prototype = {
    * @return instace of this
    */
   setupChart: function() {
+
+    var self = this;
 
     // define svg
     this.svg = this.container
@@ -608,43 +601,74 @@ pieChart.prototype = {
       .attr('class', 'legend')
       .attr('transform', 'translate(' + this.margin.left + ',' + legendTop + ')');
 
-    return this;
-  },
-  redrawChart: function(newData) {
-    var self = this;
-    var svg = this.svg;
-
     this.color = d3.scale.ordinal()
       .range(["#3FB0CC", "#A1D8E6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-    svg
+    return this;
+  },
+  resizeChart: function() {
+    this.svg
       .style('height', self.outerHeight)
       .style('width', self.outerWidth);
+
+    this.chart
+      .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
+  },
+  redrawChart: function(newData) {
+    var self = this;
 
     // parse data
     var data = newData ? this.parse_data(newData) : this.currentData;
 
+    // setup pie parts
+    var pie = d3.layout.pie()
+      .value(function(d) {
+        return d.value;
+      });
+
+    var arc = d3.svg.arc()
+      .outerRadius(self.outerRadius)
+      .innerRadius(self.innerRadius);
+
+    var arcTween = function(a) {
+
+      console.log('tween', this);
+
+      var i = d3.interpolate(this._current, a);
+      this._current = i(0);
+
+      return function(t) {
+        return arc(i(t));
+      };
+    };
+
     // stop if there is no data
     if (!data) return false;
 
+    // draw legend
     this.drawLegend(data);
 
     // define arcs
-    var arcs = this.chart.selectAll('.arc')
-      .data(self.pie(data))
-      .each(function(d) { this._current = d; });
+    this.pie = this.chart.datum(data).selectAll('path')
+      .data(pie)
+      .sort(d3.descending);
 
-    // enter
-    arcs.enter().append('g')
-      .attr('class', 'arc');
-
-    arcs.transition().duration(750);
-
-    arcs.append('path')
-      .attr('d', self.arc)
+    this.pie.enter().append('path')
+      .attr('class', 'arc')
+      .attr('d', arc)
       .style('fill', function(d) {
         return self.color(d.data.value);
+      })
+      .each(function(d) {
+        this._current = d;
       });
+
+    this.pie.transition()
+      .attrTween('d', arcTween);
+
+    this.pie.exit()
+      .transition().duration(this.duration)
+      .remove();
   },
   drawLegend: function(data) {
     var self = this;
@@ -673,6 +697,12 @@ pieChart.prototype = {
       .text(function(d) {
         return d.name;
       });
+
+    items.exit().remove();
+  },
+  resize: function() {
+    this.setupDimensions();
+    this.resizeChart();
   }
 };
 

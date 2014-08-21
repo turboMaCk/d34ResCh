@@ -1,14 +1,14 @@
 [
   {
     "name": "New visitors",
-    "value": "46289"
-  },
-  {
-    "name": "Returning visitors",
-    "value": "54324"
+    "value": "30"
   },
   {
     "name": "Dwarfs",
-    "value": "635222"
+    "value": "35"
+  },
+  {
+    "name": "Returning visitors",
+    "value": "35"
   }
 ]
