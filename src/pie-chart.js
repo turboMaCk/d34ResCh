@@ -88,8 +88,9 @@ pieChart.prototype = {
       .attr('class', 'legend')
       .attr('transform', 'translate(' + this.margin.left + ',' + legendTop + ')');
 
+    // setups colors
     this.color = d3.scale.ordinal()
-      .range(["#3FB0CC", "#A1D8E6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+      .range(["red", "green", "yellow", "blue"]);
 
     return this;
   },
@@ -143,15 +144,18 @@ pieChart.prototype = {
     this.pie.enter().append('path')
       .attr('class', 'arc')
       .attr('d', arc)
-      .style('fill', function(d) {
-        return self.color(d.data.value);
+      .style('fill', function(d, i) {
+        return self.color(i);
       })
       .each(function(d) {
         this._current = d;
       });
 
-    this.pie.transition()
-      .attrTween('d', arcTween);
+    this.pie.transition().duration(this.duration)
+      .attrTween('d', arcTween)
+      .style('fill', function(d, i) {
+        return self.color(i);
+      });
 
     this.pie.exit()
       .transition().duration(this.duration)
@@ -166,7 +170,7 @@ pieChart.prototype = {
     var offest;
 
     var item = items.enter().append('g')
-      .attr('class', '.item')
+      .attr('class', 'item')
       .attr('transform', function(d, i) {
         offset = 150*i;
 
@@ -175,12 +179,24 @@ pieChart.prototype = {
 
     item.append('circle')
       .attr('r', 4)
-      .style('fill', function(d) {
-        return self.color(d.value);
+      .style('fill', function(d, i) {
+        return self.color(i);
       });
 
     item.append('text')
       .attr('transform', 'translate(10, 4)')
+      .text(function(d) {
+        return d.name;
+      });
+
+    var transitionItems = items.transition();
+
+    transitionItems.select('circle')
+      .style('fill', function(d, i) {
+        return self.color(i);
+      });
+
+    transitionItems.select('text')
       .text(function(d) {
         return d.name;
       });
