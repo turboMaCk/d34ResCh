@@ -120,8 +120,6 @@ pieChart.prototype = {
 
     var arcTween = function(a) {
 
-      console.log('tween', this);
-
       var i = d3.interpolate(this._current, a);
       this._current = i(0);
 
