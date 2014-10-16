@@ -32,12 +32,19 @@
     chart2.redrawChart(a);
   };
 
-
   var table;
 
   d3.json('../data/progress-table.json', function(error, data) {
     table = d34ResCh('#progress-table').progressTable(data);
+    console.log(table);
   });
+
+
+  this.setTimeout(function() {
+    d3.json('../data/progress-table2.json', function(error, data) {
+      table.redrawChart(data)
+    });
+  }, 3000);
 
   var pie = d34ResCh('.pie-chart').pieChart();
 

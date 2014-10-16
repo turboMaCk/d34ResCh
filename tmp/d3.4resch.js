@@ -485,21 +485,27 @@ progressTable.prototype = {
       .text(Math.round(data.percents)+ '%');
   },
   /**
+   * Redraw Chart
+   * @desc redrow existing table to display new data-set
+   */
+  redrawChart: function(data) {
+    this.parse_data(data);
+    this.updateData();
+  },
+  /**
    * Update data
    * @desc render table
    */
-  updateData: function(data) {
+  updateData: function() {
     var self = this;
-
-    if (!data) {
-      data = this.currentData;
-    }
+    data = this.currentData;
 
     // escape if there is no data
     if (!data) {
       return false;
     }
 
+    this.cleanTable();
     this.currentData.map(self.appendRow, this);
   },
   /**
