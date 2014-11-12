@@ -19,9 +19,9 @@ mainChart.prototype = {
     // margins
     this.margin = {
       top: 30,
-      right: 40,
+      right: 10,
       bottom: 40,
-      left: 75
+      left: 35
     };
 
     // ticks
@@ -95,8 +95,8 @@ mainChart.prototype = {
     var self = this;
 
     // dimensions of whole svg
-    this.outerWidth = parseInt(this.container.style('width'));
-    this.outerHeight = parseInt(this.container.style('height'));
+    this.outerWidth = parseInt(this.container.style('width')) ? parseInt(this.container.style('width')) : 0;
+    this.outerHeight = parseInt(this.container.style('height')) ? parseInt(this.container.style('height')) : 0;
 
     // setup dimensions of chart
     this.width = this.outerWidth - this.margin.left - this.margin.right;
@@ -235,8 +235,10 @@ mainChart.prototype = {
 
     // update axis
     svg.select('.axis-x').transition()
-      .duration(duration)
-      .call(self.xAxis);
+    .duration(duration)
+      .call(self.xAxis)
+      .selectAll('text')
+        .style('text-anchor', 'end');
 
     svg.select('.axis-y').transition()
       .duration(duration)
@@ -270,10 +272,10 @@ miniChart.prototype = {
   init: function() {
     // margins
     this.margin = {
-      top: 10,
-      right: 10,
-      bottom: 10,
-      left: 10
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
     };
 
     // duration of animations
@@ -316,8 +318,8 @@ miniChart.prototype = {
   setupDimensions: function() {
 
     // dimensions of whole svg
-    this.outerWidth = parseInt(this.container.style('width'));
-    this.outerHeight = parseInt(this.container.style('height'));
+    this.outerWidth = parseInt(this.container.style('width')) ? parseInt(this.container.style('width')) : 0;
+    this.outerHeight = parseInt(this.container.style('height')) ? parseInt(this.container.style('height')) : 0;
 
     // setup dimensions of chart
     this.width = this.outerWidth - this.margin.left - this.margin.right;
@@ -517,8 +519,9 @@ progressTable.prototype = {
   }
 };
 
-var pieChart = function(element, data) {
+var pieChart = function(element, data, options) {
   this.container = element;
+  this.options = options;
 
   if (data) {
     this.currentData = data;
@@ -528,18 +531,25 @@ var pieChart = function(element, data) {
 pieChart.prototype = {
   init: function() {
 
+    var bottom;
+    if (this.options.renderLegend) {
+      bottom = 20;
+    } else {
+      bottom = 0;
+    }
+
     // margins
     this.margin = {
-      top: 30,
-      right: 20,
-      bottom: 75,
-      left: 20,
+      top: 0,
+      right: 0,
+      bottom: bottom,
+      left: 0
     };
 
     // duration of animations
     this.duration = 750;
 
-    this.thickness = 15;
+    this.thickness = 40;
 
     // first setup
     this.setupDimensions();
@@ -569,15 +579,15 @@ pieChart.prototype = {
     var self = this;
 
     // dimensions of whole svg
-    this.outerWidth = parseInt(this.container.style('width'));
-    this.outerHeight = parseInt(this.container.style('height'));
+    this.outerWidth = parseInt(this.container.style('width')) ? parseInt(this.container.style('width')) : 0;
+    this.outerHeight = parseInt(this.container.style('height')) ? parseInt(this.container.style('height')) : 0;
 
     // setup dimensions of chart
     this.width = this.outerWidth - this.margin.left - this.margin.right;
     this.height = this.outerHeight - this.margin.top - this.margin.bottom;
     this.radius = Math.min(this.width, this.height) / 2;
 
-    this.outerRadius = Math.min(self.width, self.height) / 2;
+    this.outerRadius = this.radius;
     this.innerRadius = self.outerRadius - this.thickness;
 
     return this;
@@ -597,8 +607,7 @@ pieChart.prototype = {
       .attr('class', 'pie-chart');
 
     this.chart = this.svg
-      .append('g')
-      .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
+      .append('g');
 
     var legendTop = this.height + this.margin.bottom;
 
@@ -607,20 +616,17 @@ pieChart.prototype = {
       .attr('class', 'legend')
       .attr('transform', 'translate(' + this.margin.left + ',' + legendTop + ')');
 
-    // setups colors
-    this.color = d3.scale.ordinal()
-      .range(["red", "green", "yellow", "blue"]);
-
     return this;
   },
   resizeChart: function() {
     this.svg
-      .style('height', self.outerHeight)
-      .style('width', self.outerWidth);
+      .style('height', this.outerHeight)
+      .style('width', this.outerWidth);
 
     this.chart
       .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
   },
+
   redrawChart: function(newData) {
     var self = this;
 
@@ -650,8 +656,8 @@ pieChart.prototype = {
     // stop if there is no data
     if (!data) return false;
 
-    // draw legend
-    this.drawLegend(data);
+    // draw legend if is set to
+    if (this.options.renderLegend) this.drawLegend(data);
 
     // define arcs
     this.pie = this.chart.datum(data).selectAll('path')
@@ -659,25 +665,21 @@ pieChart.prototype = {
       .sort(d3.descending);
 
     this.pie.enter().append('path')
-      .attr('class', 'arc')
       .attr('d', arc)
-      .style('fill', function(d, i) {
-        return self.color(i);
-      })
+      .attr('class', this.arcClass)
       .each(function(d) {
         this._current = d;
       });
 
     this.pie.transition().duration(this.duration)
       .attrTween('d', arcTween)
-      .style('fill', function(d, i) {
-        return self.color(i);
-      });
+      .attr('class', this.arcClass);
 
     this.pie.exit()
       .transition().duration(this.duration)
       .remove();
   },
+
   drawLegend: function(data) {
     var self = this;
 
@@ -696,9 +698,7 @@ pieChart.prototype = {
 
     item.append('circle')
       .attr('r', 4)
-      .style('fill', function(d, i) {
-        return self.color(i);
-      });
+      .attr('class', this.arcClass);
 
     item.append('text')
       .attr('transform', 'translate(10, 4)')
@@ -709,9 +709,7 @@ pieChart.prototype = {
     var transitionItems = items.transition();
 
     transitionItems.select('circle')
-      .style('fill', function(d, i) {
-        return self.color(i);
-      });
+      .attr('class', this.arcClass);
 
     transitionItems.select('text')
       .text(function(d) {
@@ -720,9 +718,15 @@ pieChart.prototype = {
 
     items.exit().remove();
   },
+
   resize: function() {
     this.setupDimensions();
     this.resizeChart();
+    this.redrawChart();
+  },
+
+  arcClass: function(d, i) {
+    return 'arc arc-' + (i+1);
   }
 };
 
@@ -787,13 +791,15 @@ _wrap.prototype = {
 
     return chart.init();
   },
-  pieChart: function(data) {
+  pieChart: function(data, options) {
+
+    if (!options) options = {};
 
     if (!data) {
       data = this.currentData;
     }
 
-    var chart = new pieChart(this.element, data);
+    var chart = new pieChart(this.element, data, options);
 
     return chart.init();
   }

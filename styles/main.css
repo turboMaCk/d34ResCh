@@ -1,4 +1,4 @@
-/* line 17, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 5, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,52 +20,52 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 22, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 html {
   line-height: 1;
 }
 
-/* line 24, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 26, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 28, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 30, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 103, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 103, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 32, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 32, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 116, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-0.12.7/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
-article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
+/* line 116, ../../../.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/compass-core-1.0.1/stylesheets/compass/reset/_utilities.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, main, menu, nav, section, summary {
   display: block;
 }
 
 /* line 7, ../sass/main.sass */
 .box {
-  background: white;
+  background: #fff;
   width: 50%;
 }
 
@@ -102,7 +102,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 /* line 34, ../sass/main.sass */
 #progress-table tr {
-  border-top: 1px #b0b0b0 dotted;
+  border-top: 1px #B0B0B0 dotted;
   height: 50px;
 }
 /* line 38, ../sass/main.sass */
@@ -111,7 +111,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 }
 /* line 41, ../sass/main.sass */
 #progress-table .progress .progress-container {
-  background: #f2f2f2;
+  background: #F2F2F2;
   display: block;
   height: 4px;
 }
@@ -119,7 +119,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 #progress-table .progress .progress-bar {
   display: block;
   float: left;
-  background: #22c682;
+  background: #22C682;
   height: 100%;
 }
 
@@ -132,30 +132,30 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 /* line 56, ../sass/main.sass */
 body {
   font: 12px Arial;
-  background: #f2f2f2;
+  background: #F2F2F2;
 }
 
 /* line 61, ../sass/main.sass */
 .mini-chart .area {
-  fill: #a1d8e6;
+  fill: #A1D8E6;
   stroke-width: 0;
 }
 
 /* line 66, ../sass/main.sass */
 .main-chart path {
-  stroke: #22c682;
+  stroke: #22C682;
   stroke-width: 2;
   fill: none;
 }
 /* line 71, ../sass/main.sass */
 .main-chart .area {
-  fill: #22c682;
+  fill: #22C682;
   stroke-width: 0;
 }
 
 /* line 77, ../sass/main.sass */
 .axis text {
-  fill: #7f7f7f;
+  fill: #7F7F7F;
 }
 
 /* line 83, ../sass/main.sass */
@@ -166,8 +166,8 @@ body {
 /* line 86, ../sass/main.sass */
 .point {
   stroke-width: 2px;
-  stroke: #22c682;
-  fill: white;
+  stroke: #22C682;
+  fill: #ffffff;
 }
 
 /* line 92, ../sass/main.sass */
@@ -177,7 +177,7 @@ body {
   fill: none;
   stroke-width: 1;
   shape-rendering: crispEdges;
-  stroke: black;
+  stroke: #000;
   opacity: 0.3;
   stroke-dasharray: 2px, 2px;
 }
