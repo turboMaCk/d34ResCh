@@ -88,8 +88,8 @@ mainChart.prototype = {
     var self = this;
 
     // dimensions of whole svg
-    this.outerWidth = parseInt(this.container.style('width'));
-    this.outerHeight = parseInt(this.container.style('height'));
+    this.outerWidth = parseInt(this.container.style('width')) ? parseInt(this.container.style('width')) : 0;
+    this.outerHeight = parseInt(this.container.style('height')) ? parseInt(this.container.style('height')) : 0;
 
     // setup dimensions of chart
     this.width = this.outerWidth - this.margin.left - this.margin.right;
@@ -228,7 +228,7 @@ mainChart.prototype = {
 
     // update axis
     svg.select('.axis-x').transition()
-      .duration(duration)
+    .duration(duration)
       .call(self.xAxis)
       .selectAll('text')
         .style('text-anchor', 'end');
