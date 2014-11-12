@@ -58,7 +58,7 @@ pieChart.prototype = {
     this.height = this.outerHeight - this.margin.top - this.margin.bottom;
     this.radius = Math.min(this.width, this.height) / 2;
 
-    this.outerRadius = Math.min(self.width, self.height) / 2;
+    this.outerRadius = this.radius;
     this.innerRadius = self.outerRadius - this.thickness;
 
     return this;
@@ -78,8 +78,7 @@ pieChart.prototype = {
       .attr('class', 'pie-chart');
 
     this.chart = this.svg
-      .append('g')
-      .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
+      .append('g');
 
     var legendTop = this.height + this.margin.bottom;
 
@@ -88,16 +87,12 @@ pieChart.prototype = {
       .attr('class', 'legend')
       .attr('transform', 'translate(' + this.margin.left + ',' + legendTop + ')');
 
-    // setups colors
-    this.color = d3.scale.ordinal()
-      .range(["red", "green", "yellow", "blue"]);
-
     return this;
   },
   resizeChart: function() {
     this.svg
-      .style('height', self.outerHeight)
-      .style('width', self.outerWidth);
+      .style('height', this.outerHeight)
+      .style('width', this.outerWidth);
 
     this.chart
       .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
@@ -142,8 +137,8 @@ pieChart.prototype = {
     this.pie.enter().append('path')
       .attr('class', 'arc')
       .attr('d', arc)
-      .style('fill', function(d, i) {
-        return self.color(i);
+      .attr('class', function(d, i) {
+        return 'arc-' + i;
       })
       .each(function(d) {
         this._current = d;
@@ -151,8 +146,8 @@ pieChart.prototype = {
 
     this.pie.transition().duration(this.duration)
       .attrTween('d', arcTween)
-      .style('fill', function(d, i) {
-        return self.color(i);
+      .attr('class', function(d, i) {
+        return 'arc-' + i;
       });
 
     this.pie.exit()
@@ -177,8 +172,8 @@ pieChart.prototype = {
 
     item.append('circle')
       .attr('r', 4)
-      .style('fill', function(d, i) {
-        return self.color(i);
+      .attr('class', function(d, i) {
+        return 'arc-' + i;
       });
 
     item.append('text')
@@ -190,8 +185,8 @@ pieChart.prototype = {
     var transitionItems = items.transition();
 
     transitionItems.select('circle')
-      .style('fill', function(d, i) {
-        return self.color(i);
+      .attr('class', function(d, i) {
+        return 'arc-' + i;
       });
 
     transitionItems.select('text')
