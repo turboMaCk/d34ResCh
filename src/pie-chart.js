@@ -201,6 +201,7 @@ pieChart.prototype = {
   resize: function() {
     this.setupDimensions();
     this.resizeChart();
+    this.redrawChart();
   },
 
   arcClass: function(d, i) {
