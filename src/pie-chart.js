@@ -135,20 +135,15 @@ pieChart.prototype = {
       .sort(d3.descending);
 
     this.pie.enter().append('path')
-      .attr('class', 'arc')
       .attr('d', arc)
-      .attr('class', function(d, i) {
-        return 'arc-' + i;
-      })
+      .attr('class', this.arcClass)
       .each(function(d) {
         this._current = d;
       });
 
     this.pie.transition().duration(this.duration)
       .attrTween('d', arcTween)
-      .attr('class', function(d, i) {
-        return 'arc-' + i;
-      });
+      .attr('class', this.arcClass);
 
     this.pie.exit()
       .transition().duration(this.duration)
@@ -172,9 +167,7 @@ pieChart.prototype = {
 
     item.append('circle')
       .attr('r', 4)
-      .attr('class', function(d, i) {
-        return 'arc-' + i;
-      });
+      .attr('class', this.arcClass);
 
     item.append('text')
       .attr('transform', 'translate(10, 4)')
@@ -185,9 +178,7 @@ pieChart.prototype = {
     var transitionItems = items.transition();
 
     transitionItems.select('circle')
-      .attr('class', function(d, i) {
-        return 'arc-' + i;
-      });
+      .attr('class', this.arcClass);
 
     transitionItems.select('text')
       .text(function(d) {
@@ -196,8 +187,13 @@ pieChart.prototype = {
 
     items.exit().remove();
   },
+
   resize: function() {
     this.setupDimensions();
     this.resizeChart();
+  },
+
+  arcClass: function(d, i) {
+    return 'arc arc-' + (i+1);
   }
 };
