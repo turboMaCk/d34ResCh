@@ -12,9 +12,9 @@ mainChart.prototype = {
     // margins
     this.margin = {
       top: 30,
-      right: 40,
+      right: 10,
       bottom: 40,
-      left: 75
+      left: 35
     };
 
     // ticks
@@ -229,7 +229,9 @@ mainChart.prototype = {
     // update axis
     svg.select('.axis-x').transition()
       .duration(duration)
-      .call(self.xAxis);
+      .call(self.xAxis)
+      .selectAll('text')
+        .style('text-anchor', 'end');
 
     svg.select('.axis-y').transition()
       .duration(duration)

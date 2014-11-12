@@ -70,13 +70,15 @@ _wrap.prototype = {
 
     return chart.init();
   },
-  pieChart: function(data) {
+  pieChart: function(data, options) {
+
+    if (!options) options = {};
 
     if (!data) {
       data = this.currentData;
     }
 
-    var chart = new pieChart(this.element, data);
+    var chart = new pieChart(this.element, data, options);
 
     return chart.init();
   }

@@ -10,10 +10,10 @@ miniChart.prototype = {
   init: function() {
     // margins
     this.margin = {
-      top: 10,
-      right: 10,
-      bottom: 10,
-      left: 10
+      top: 0,
+      right: 0,
+      bottom: 0,
+      left: 0
     };
 
     // duration of animations

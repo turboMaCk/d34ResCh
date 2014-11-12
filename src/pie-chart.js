@@ -1,5 +1,6 @@
-var pieChart = function(element, data) {
+var pieChart = function(element, data, options) {
   this.container = element;
+  this.options = options;
 
   if (data) {
     this.currentData = data;
@@ -9,18 +10,25 @@ var pieChart = function(element, data) {
 pieChart.prototype = {
   init: function() {
 
+    var bottom;
+    if (this.options.renderLegend) {
+      bottom = 20;
+    } else {
+      bottom = 0;
+    }
+
     // margins
     this.margin = {
-      top: 30,
-      right: 20,
-      bottom: 75,
-      left: 20,
+      top: 0,
+      right: 0,
+      bottom: bottom,
+      left: 0
     };
 
     // duration of animations
     this.duration = 750;
 
-    this.thickness = 15;
+    this.thickness = 40;
 
     // first setup
     this.setupDimensions();
@@ -97,6 +105,7 @@ pieChart.prototype = {
     this.chart
       .attr('transform', 'translate(' + this.outerWidth/2 + ',' + this.outerHeight/2 + ')');
   },
+
   redrawChart: function(newData) {
     var self = this;
 
@@ -126,8 +135,8 @@ pieChart.prototype = {
     // stop if there is no data
     if (!data) return false;
 
-    // draw legend
-    this.drawLegend(data);
+    // draw legend if is set to
+    if (this.options.renderLegend) this.drawLegend(data);
 
     // define arcs
     this.pie = this.chart.datum(data).selectAll('path')
@@ -149,6 +158,7 @@ pieChart.prototype = {
       .transition().duration(this.duration)
       .remove();
   },
+
   drawLegend: function(data) {
     var self = this;
 
