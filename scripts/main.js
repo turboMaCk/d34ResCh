@@ -3,12 +3,14 @@
 /* global d34ResCh */
 
 (function() {
-  var chart = d34ResCh('#main-chart');
-
   d3.json('../data/fixtures.json', function(error, data) {
 
     // init with data
-    chart = d34ResCh('#main-chart').mainChart(data);
+    chart = d34ResCh('#main-chart').mainChart(data, {
+      click: function(d, i, el) {
+        console.log(d, i, el);
+      }
+    });
   });
 
   // init

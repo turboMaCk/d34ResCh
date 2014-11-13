@@ -1,5 +1,6 @@
-var mainChart = function(element, data) {
+var mainChart = function(element, data, options) {
   this.container = element;
+  this.options = options;
 
   if (data) {
     this.currentData = data;
@@ -203,16 +204,23 @@ mainChart.prototype = {
           })
           .attr('r', 4);
 
+    if (this.options && this.options.click) {
+      point.on({
+        'click': function(d, i) {
+          self.options.click(d, i, this)
+        }
+      });
+    }
+
     // point transition
-    point.transition()
-      .duration(duration)
-        .select('circle')
-          .attr('cx', function(d) {
-            return self.x(d.date);
-          })
-          .attr('cy', function(d) {
-            return self.y(d.value);
-          });
+    point.transition().duration(duration)
+      .select('circle')
+        .attr('cx', function(d) {
+          return self.x(d.date);
+        })
+        .attr('cy', function(d) {
+          return self.y(d.value);
+        });
 
     // kill point
     point.exit().transition()

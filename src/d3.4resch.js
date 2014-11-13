@@ -40,13 +40,15 @@ var _wrap = function(selector, data) {
 
 // set prototype
 _wrap.prototype = {
-  mainChart: function(data) {
+  mainChart: function(data, options) {
+
+    if (!options) options = {};
 
     if (!data) {
       data = this.currentData;
     }
 
-    var chart = new mainChart(this.element, data);
+    var chart = new mainChart(this.element, data, options);
 
     return chart.init();
   },
