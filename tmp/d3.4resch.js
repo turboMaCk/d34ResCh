@@ -214,7 +214,7 @@ mainChart.prototype = {
     if (this.options && this.options.click) {
       point.on({
         'click': function(d, i) {
-          self.options.click(d, i, this)
+          self.options.click(d, i, this);
         }
       });
     }
